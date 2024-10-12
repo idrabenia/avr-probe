@@ -1,0 +1,5 @@
+avrdude -pm328p -carduino  -P/dev/cu.usbserial-1410 -b57600 -Uflash:w:./hello_1.hex:i
+
+avra hello_1.asm
+
+avrdude -pm328 -cusbasp  -b9600 -Uflash:w:./hello_2.hex:i -B 10
