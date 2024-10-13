@@ -1,7 +1,5 @@
-*
-!/**/
-!*.*
 *.hex
 *.obj
 *.o
 .vscode
+main
