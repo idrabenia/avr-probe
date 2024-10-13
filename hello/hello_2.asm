@@ -43,10 +43,10 @@ main_loop:
     lds r7, delay_val ; delay multiplier
     mul r7, r20 ; delay_base * delay_val
 
-    call delay_1
+    rcall delay_1
     sbi PORTB, PORTB4 ; set "1"
 
-    call delay_1
+    rcall delay_1
     cbi PORTB, PORTB4 ; set "0"
 
     ldi r21, 0 ; clear delay_val changed flag
