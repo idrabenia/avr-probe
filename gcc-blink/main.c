@@ -1,7 +1,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
  
-#define BLINK_DELAY_MS 1000
+#define BLINK_DELAY_MS 200
  
 int main (void) 
 {
