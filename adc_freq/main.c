@@ -4,6 +4,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+#include <avr/wdt.h>
 
 volatile uint8_t out = 0;
 
@@ -27,7 +28,7 @@ int main(void)
     // ADC
     DDRB &= ~(1 << DDB4);
     ADMUX |= (1 << MUX1) | (1 << ADLAR);
-    //ADCSRA |= (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2);
+    ADCSRA |= (1 << ADPS0) | (1 << ADPS1) /*| (1 << ADPS2)*/;
     ADCSRA |= (1 << ADEN) | (1 << ADIE) | (1 << ADATE);
     ADCSRA |= (1 << ADTS2);
     ADCSRA |= (1 << ADSC);
@@ -38,9 +39,14 @@ int main(void)
     DDRB |= (1 << DDB0) | (1 << DDB1);
     OCR0A = 127;
 
+    // WatchDog
+    wdt_reset();
+    WDTCR |= (1 << WDE) | (1 << WDP1) | (1 << WDP2);
+
     sei();
 
     while (1) {
         _delay_ms(50);
+        wdt_reset();
     }
 }
