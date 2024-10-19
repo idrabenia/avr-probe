@@ -5,6 +5,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include <avr/wdt.h>
+#include <avr/sleep.h>
 
 volatile uint8_t out = 0;
 
@@ -19,6 +20,8 @@ ISR(ADC_vect)
     } else {
         PORTB |= (1 << PORTB1);
     }
+
+    //sleep_cpu();
 }
 
 int main(void)
@@ -41,12 +44,15 @@ int main(void)
 
     // WatchDog
     wdt_reset();
-    WDTCR |= (1 << WDE) | (1 << WDP1) | (1 << WDP2);
+    WDTCR |= (1 << WDE) | (1 << WDP0) | (1 << WDP3);
+
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+    sleep_enable();
 
     sei();
 
     while (1) {
-        _delay_ms(50);
-        wdt_reset();
+        _delay_ms(300);
+        sleep_cpu();
     }
 }
