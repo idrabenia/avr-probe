@@ -41,11 +41,11 @@ volatile short app_time_pulse = 0;
 // time when last command was received
 volatile long last_cmd_time = 0;
 
-void send_UART(char value);
+void send_uart(char value);
 
-void send_UART_str(char* value);
+void send_uart_str(char* value);
 
-void send_UART_hex(int hex);
+void send_uart_hex(int hex);
 
 void on_next_pulse(short signal, short* state, int* result);
 
@@ -73,11 +73,11 @@ int main (void)
 
         if (code != -1) {
             if (app_time_ms - last_cmd_time > 300) {
-                send_UART_str("Addr: ");
-                send_UART_hex((code >> 6) & 0x1F);
-                send_UART_str(", Command: ");
-                send_UART_hex(code & 0x3F);
-                send_UART('\n');
+                send_uart_str("Addr: ");
+                send_uart_hex((code >> 6) & 0x1F);
+                send_uart_str(", Command: ");
+                send_uart_hex(code & 0x3F);
+                send_uart('\n');
                 last_cmd_time = app_time_ms;
             }
 
@@ -114,27 +114,27 @@ ISR(TIMER1_CAPT_vect) {
     }
 }
 
-void send_UART(char value) 
+void send_uart(char value) 
 {
     while (!(UCSR0A & (1 << UDRE0)));
     UDR0 = value;
 }
 
-void send_UART_str(char* value) 
+void send_uart_str(char* value) 
 {
     int length = strlen(value);
     
     for (int i = 0; i < length; i += 1) {
-        send_UART(value[i]); 
+        send_uart(value[i]); 
     }
 }
 
-void send_UART_hex(int value)
+void send_uart_hex(int value)
 {
     char buf[30] = {0};
     char* hex_code = itoa(value, buf, 16);
 
-    send_UART_str(hex_code);
+    send_uart_str(hex_code);
 }
 
 short to_pulse_type(short signal, short duration)
